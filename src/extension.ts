@@ -1,24 +1,76 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+import { start } from 'repl';
 import * as vscode from 'vscode';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "send-snippet-to-terminal" is now active!');
+    let disposable = vscode.commands.registerCommand('send-snippet-to-terminal.send-multiline', async () => {
+        const editor = vscode.window.activeTextEditor;
+        const terminal = vscode.window.activeTerminal;
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('send-snippet-to-terminal.send-multiline', () => {
-		vscode.window.showInformationMessage('Hello World from Send snippet to Terminal!');
-	});
+        if (!editor) {
+            vscode.window.showWarningMessage("Send snippet to Terminal: No document open");
+            return;
+        }
 
-	context.subscriptions.push(disposable);
+        let text = "";
+        if (editor.selection.isEmpty) {
+            // No text selection, so let's expand the selection automatically
+            let startLineNumber = editor.selection.start.line;
+            let currentLineNumber = startLineNumber - 1;
+            while (currentLineNumber >= 0) {
+                let currentLineText = editor.document.lineAt(currentLineNumber);
+                if (currentLineText.isEmptyOrWhitespace) {
+                    // Empty
+                    break;
+                }
+
+                if (!currentLineText.text.endsWith("`") &&
+                    !currentLineText.text.endsWith("\\")) {
+                    // No PowerShell ` (backtick) or Bash \ as indicating new line
+                    break;
+                }
+
+                startLineNumber = currentLineNumber;
+                currentLineNumber--;
+            }
+
+            let endLineNumber = editor.selection.end.line;
+            currentLineNumber = endLineNumber;
+            while (currentLineNumber < editor.document.lineCount) {
+                let currentLineText = editor.document.lineAt(currentLineNumber);
+                if (currentLineText.isEmptyOrWhitespace) {
+                    // Empty
+                    break;
+                }
+
+                endLineNumber = currentLineNumber;
+                if (!currentLineText.text.endsWith("`") &&
+                    !currentLineText.text.endsWith("\\")) {
+                    // No PowerShell ` (backtick) or Bash \ as indicating new line
+                    break;
+                }
+
+                currentLineNumber++;
+            }
+
+            const expandedRange = editor.document.validateRange(new vscode.Range(startLineNumber, 0, endLineNumber + 1, 0));
+            text = editor.document.getText(expandedRange);
+        }
+        else {
+            // There is already text selection, so let's use that
+            text = editor.document.getText(editor.selection);
+        }
+
+        if (text.length > 0) {
+            if (!terminal) {
+                vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
+                return;
+            }
+            terminal.sendText(text);
+        }
+    });
+
+    context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() { }

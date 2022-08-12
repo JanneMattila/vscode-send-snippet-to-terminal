@@ -2,6 +2,8 @@
   "name": "send-snippet-to-terminal",
   "displayName": "Send snippet to Terminal",
   "description": "Send code snippet to Terminal by automatically expanding the code block to cover the multiline command",
+  "publisher": "jannemattila",
+  "license": "MIT",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
@@ -9,6 +11,18 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "scripting"
+  ],
+  "homepage": "https://github.com/JanneMattila/vscode-send-snippet-to-terminal",
+  "bugs": {
+    "url": "https://github.com/JanneMattila/vscode-send-snippet-to-terminal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JanneMattila/vscode-send-snippet-to-terminal.git"
+  },
+  "icon": "icon.png",
   "activationEvents": [
     "onCommand:send-snippet-to-terminal.send-multiline"
   ],
