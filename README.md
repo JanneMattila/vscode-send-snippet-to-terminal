@@ -27,7 +27,6 @@ Now if you execute `send-snippet-to-terminal.send-multiline` in VS Code
 when your cursor is anywhere in those lines in your editor, then
 extension will automatically select the entire block and then sends it to Terminal
 for execution. This makes your script development _much_ faster.
-Here is example 
 
 To enable this command with handy keyboard shortcut like e.g., `Shift-Enter`,
 then follow these instructions:
