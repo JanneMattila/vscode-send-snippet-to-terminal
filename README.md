@@ -44,6 +44,10 @@ that might overlap with your selection.
 
 ## Release Notes
 
+### 0.0.2
+
+Add support for opening Terminal, if not already open.
+
 ### 0.0.1
 
 Initial release

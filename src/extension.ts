@@ -5,11 +5,20 @@ export function activate(context: vscode.ExtensionContext) {
 
     let disposable = vscode.commands.registerCommand('send-snippet-to-terminal.send-multiline', async () => {
         const editor = vscode.window.activeTextEditor;
-        const terminal = vscode.window.activeTerminal;
+        let terminal = vscode.window.activeTerminal;
 
         if (!editor) {
             vscode.window.showWarningMessage("Send snippet to Terminal: No document open");
             return;
+        }
+
+        if (!terminal) {
+            terminal = vscode.window.createTerminal();
+            if (!terminal) {
+                vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
+                return;
+            }
+            terminal.show(true);
         }
 
         let text = "";
@@ -62,10 +71,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         if (text.length > 0) {
-            if (!terminal) {
-                vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
-                return;
-            }
             terminal.sendText(text);
         }
     });
