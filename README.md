@@ -41,8 +41,13 @@ that might overlap with your selection.
 ## Extension Settings
 
 * `send-snippet-to-terminal.send-multiline`: Send multiline command to Terminal.
+* `send-snippet-to-terminal.send-clear`: Send `clear` command to Terminal.
 
 ## Release Notes
+
+### 0.0.3
+
+Add support for sending `clear` command to Terminal.
 
 ### 0.0.2
 

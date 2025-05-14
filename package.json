@@ -4,7 +4,7 @@
   "description": "Send code snippet to Terminal by automatically expanding the code block to cover the multiline command",
   "publisher": "jannemattila",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -24,7 +24,6 @@
   },
   "icon": "icon.png",
   "activationEvents": [
-    "onCommand:send-snippet-to-terminal.send-multiline"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -32,6 +31,10 @@
       {
         "command": "send-snippet-to-terminal.send-multiline",
         "title": "Send multiline command to Terminal"
+      },
+      {
+        "command": "send-snippet-to-terminal.send-clear",
+        "title": "Send 'clear' command to Terminal"
       }
     ]
   },

@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    let disposable = vscode.commands.registerCommand('send-snippet-to-terminal.send-multiline', async () => {
+    let disposable1 = vscode.commands.registerCommand('send-snippet-to-terminal.send-multiline', async () => {
         const editor = vscode.window.activeTextEditor;
         let terminal = vscode.window.activeTerminal;
 
@@ -75,7 +75,29 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(disposable);
+    let disposable2 = vscode.commands.registerCommand('send-snippet-to-terminal.send-clear', async () => {
+        const editor = vscode.window.activeTextEditor;
+        let terminal = vscode.window.activeTerminal;
+
+        if (!editor) {
+            vscode.window.showWarningMessage("Send snippet to Terminal: No document open");
+            return;
+        }
+
+        if (!terminal) {
+            terminal = vscode.window.createTerminal();
+            if (!terminal) {
+                vscode.window.showWarningMessage("Send snippet to Terminal: No Terminal available");
+                return;
+            }
+            terminal.show(true);
+        }
+
+        terminal.sendText("clear");
+    });
+
+    context.subscriptions.push(disposable1);
+    context.subscriptions.push(disposable2);
 }
 
 export function deactivate() { }
